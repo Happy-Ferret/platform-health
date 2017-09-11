@@ -1,10 +1,8 @@
-import { createClient } from 'then-redis';
 import fetch from 'node-fetch';
 import moment from 'moment';
 
 const defaultTtl = moment.duration(8, 'hours').as('seconds');
 
-let db = null;
 const devCache = {};
 
 export default async function fetchText(
@@ -15,10 +13,7 @@ export default async function fetchText(
   if (typeof ttl === 'string') {
     ttl = moment.duration(1, ttl).as('seconds');
   }
-  if (process.env.REDIS_URL && !db) {
-    db = createClient(process.env.REDIS_URL);
-  }
-  const cached = db ? await db.get(key) : devCache[key];
+  const cached = devCache[key];
   if (cached) {
     return cached;
   }
@@ -28,11 +23,6 @@ export default async function fetchText(
     return null;
   }
   const text = await response.text();
-  if (process.env.REDIS_URL) {
-    db.set(key, text);
-    db.expire(key, ttl);
-  } else {
-    devCache[key] = text;
-  }
+  devCache[key] = text;
   return text;
 }

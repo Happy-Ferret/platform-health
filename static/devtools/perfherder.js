@@ -22,11 +22,17 @@ export default class PerfherderWidget extends React.Component {
 
   async fetch() {
     const { signatures, framework } = this.props;
+    console.log('signatures 1: ', signatures);
     const signatureLabels = Object.keys(signatures);
     const splitSignatures = Object.values(signatures).reduce((split, signature, idx) => {
-      signature.split(/\s*,\s*/).forEach(entry => split.set(entry, signatureLabels[idx]));
+      console.log('reduce', split, signature, idx);
+      signature.split(/\s*,\s*/).forEach((entry) => {
+        console.log('split', entry, signatureLabels);
+        split.set(entry, signatureLabels[idx]);
+      });
       return split;
     }, new Map());
+    console.log('signatures 2: ', splitSignatures, [...splitSignatures.keys()]);
     const query = stringify({
       signatures: [...splitSignatures.keys()],
       framework: framework,
@@ -215,7 +221,7 @@ export default class PerfherderWidget extends React.Component {
         content={svg}
         loading={!evolutions}
         explainer={`${explainer} (14-day moving median, variance band between 1st/3rd quantile)`}
-        viewport={size => (this.viewport = size)}
+        viewport={(size) => { this.viewport = size; }}
       />
     );
   }

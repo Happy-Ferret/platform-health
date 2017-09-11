@@ -3,15 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
-import Home from './home';
-import ReleaseCrashes from './crashes/release';
-import BetaCrashes from './crashes/beta';
-import Status from './status/index';
-import Quantum from './quantum/index';
-import QuantumResponsivenessParent from './quantum/responsiveness-parent';
-import QuantumResponsivenessContent from './quantum/responsiveness-content';
-import QuantumPageLoadRender from './quantum/pageload-render';
-import QuantumTracking from './quantum/metric';
+import DevTools from './devtools/index';
 
 const NoMatch = () => <div>404</div>;
 
@@ -53,15 +45,7 @@ export default class Routes extends Component {
     return (
       <Router history={browserHistory}>
         <Route path='/' component={App}>
-          <IndexRoute component={Home} />
-          <Route path='crashes' component={ReleaseCrashes} />
-          <Route path='crashes/beta' component={BetaCrashes} />
-          <Route path='quantum' component={Quantum} />
-          <Route path='quantum/responsiveness/parent' component={QuantumResponsivenessParent} />
-          <Route path='quantum/responsiveness/content' component={QuantumResponsivenessContent} />
-          <Route path='quantum/pageload/render' component={QuantumPageLoadRender} />
-          <Route path='quantum/track' component={QuantumTracking} />
-          <Route path='status' component={Status} />
+          <IndexRoute component={DevTools} />
         </Route>
         <Route path='*' component={NoMatch} />
       </Router>
